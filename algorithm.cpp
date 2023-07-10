@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <ios>
+#include <array>
 
 class Stack {
     private:
@@ -93,11 +95,11 @@ class Queue {
         int rear;
         int front;
         Queue(){
+            rear = -1;
+            front = -1;
             for (size_t i = 0; i < 4; i++)
             {
                 arr[i] = 0;
-                rear = -1;
-                front = -1;
             }
             
         }
@@ -112,7 +114,7 @@ class Queue {
             
         }
         bool is_full(){
-            if (rear == std::size(arr) -1)
+            if (rear == 3)
             {
                 return true;
             }else{
@@ -152,6 +154,94 @@ class Queue {
             
         }
 };
+
+
+class CircularQueue {
+    private:
+        int itemCount;
+        int arr[5];
+        int rear;
+        int front;
+        CircularQueue(){
+            itemCount = 0;
+             rear = -1;
+                front = -1;
+            for (size_t i = 0; i < 5; i++)
+            {
+                arr[i] = 0;
+            }
+            
+        }
+    public:
+        bool is_empty(){
+            if (rear == -1 && front == -1)
+            {
+                return true;
+            }else{
+                return false;
+            }
+             
+        }
+        bool is_full(){
+            if ((rear + 1) % 5 == front)
+            {
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
+        void enqueue(int val){
+            if (this->is_full())
+            {
+                std::cout << "Array is filled up cannot add another" << std::endl;
+            }else if (this->is_empty())
+            {
+                rear = 0;
+                front = 0;
+                arr[rear] = val;
+            }else
+            {
+                rear = (rear + 1) % 5;
+                arr[rear] = val;
+            }
+            itemCount++;
+            
+        }
+        int dequeue() {
+            int x = 0;
+            if (this->is_empty())
+            {
+                std::cout << "Array val is empty" << std::endl;
+                return x;
+            }else if (rear == front)
+            {
+               x = arr[front];
+               rear = front = -1;
+                itemCount--; 
+               return x;
+            }else{
+                x = arr[front];
+                front = (front + 1) % 5;
+                itemCount--; 
+                return x;
+            }
+            
+        }
+
+        int count() {
+            return (itemCount); 
+        }
+
+        void display() {
+            for (size_t i = 0; i < itemCount; i++)
+            {
+                std::cout  << arr[i];
+            }
+            
+        }
+};
+
 
 int main() {
     Stack s1;

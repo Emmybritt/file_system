@@ -69,6 +69,13 @@
 		"iterator": "cpp",
 		"memory_resource": "cpp",
 		"random": "cpp",
-		"utility": "cpp"
+		"utility": "cpp",
+		"map": "cpp",
+		"__string": "cpp",
+		"stop_token": "cpp",
+		"deque": "cpp",
+		"__memory": "cpp",
+		"charconv": "cpp",
+		"format": "cpp"
 	}
 }
