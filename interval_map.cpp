@@ -40,24 +40,23 @@ public:
 		// m_map[keyBegin] = val;
 
 		
-		  if (keyBegin >= keyEnd) {
-				return;
-			}
+		  if (!(keyBegin < keyEnd)) {
+            return;  // Empty interval, do nothing
+        }
 
-			// Check if the key type is less-than comparable.
-			if (!std::less<K>()(keyBegin, keyEnd)) {
-				return;
-			}
+        // Check if the key type is less-than comparable.
+        if (!(std::less<K>()(keyBegin, keyEnd))) {
+            return;  // Invalid comparison, do nothing
+        }
 
-			// Erase all entries in the map that fall within the new interval.
-			auto beginIter = m_map.lower_bound(keyBegin);
-			auto endIter = m_map.upper_bound(keyEnd);
-			m_map.erase(beginIter, endIter);
+        auto nextIter = m_map.upper_bound(keyBegin);
 
-			// Insert a new entry into the map for the new interval.
-			m_map.emplace(keyBegin, val);
-			m_map[keyEnd] = m_valBegin;
-			m_map[keyBegin] = val;
+        // Remove entries that are contained within the new interval
+        m_map.erase(nextIter, m_map.upper_bound(keyEnd));
+
+        // Insert the new value for the interval [keyBegin, keyEnd)
+        m_map.emplace_hint(nextIter, keyBegin, val);
+        m_map[keyEnd] = m_valBegin;
     }
     
     V const& operator[](K const& key) const {
